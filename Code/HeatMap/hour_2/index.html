@@ -1,0 +1,596 @@
+<!doctype html>
+<html>
+<head>
+    <title>Many Points with  leaflet WebGL</title>
+    <meta charset="utf-8">
+
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            background: rgb(14, 21, 30);
+            height: 100%;
+        }
+
+        #map {
+            /*position: absolute;*/
+            position:center;
+            height: 85%;
+            width: 100%;
+            background-color: #333;
+        }
+    </style>
+    <!-- vertex shader -->
+    <script id="vshader" type="x-shader/x-vertex">
+        uniform mat4 u_matrix;
+        attribute vec4 a_vertex;
+        attribute float a_pointSize;
+        attribute vec4 a_color;
+        varying vec4 v_color;
+
+        void main() {
+            // Set the size of the point
+            gl_PointSize =  a_pointSize;
+
+            // multiply each vertex by a matrix.
+            gl_Position = u_matrix * a_vertex;
+
+            // pass the color to the fragment shader
+            v_color = a_color;
+        }
+    </script>
+
+    <!-- fragment shader -->
+    <script id="fshader" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec4 v_color;
+
+        void main() {
+
+            float border = 0.05;
+            float radius = 0.5;
+            vec4 color0 = vec4(0.0, 0.0, 0.0, 0.0);
+            vec4 color1 = vec4(45.0/255.0, 144.0/255.0, 245.0/255.0, 0.5);
+
+            vec2 m = gl_PointCoord.xy - vec2(0.5, 0.5);
+            float dist = radius - sqrt(m.x * m.x + m.y * m.y);
+
+            float t = 0.0;
+            if (dist > border)
+            t = 1.0;
+            else if (dist > 0.0)
+            t = dist / border;
+
+            gl_FragColor = mix(color0, color1, t);
+
+        }
+
+    </script>
+
+</head>
+<body>
+<div id="map"></div>
+<link rel="stylesheet" href="leaflet.css" />
+<script src="leaflet.js"></script>
+<script src="L.CanvasOverlay.js"></script>
+<script src="d3.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+      integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+      crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
+        integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+        crossorigin=""></script>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="leaflet-heat.js"></script>
+
+
+<div id="info_1">
+    <div style="text-align: center;color: white;"><h2>请输入时间(1~23)</h2>
+        <form action="" method="post">
+            <input type="text" name="name" id="input_text" value="" />
+            <input id="button_1" type="button" value="确定" onclick="getButtonOnClick()"/>
+        </form>
+    </div>
+</div>
+
+<div style="text-align: center;"><div id="main" style="width: 1080px;height: 790px;"></div>
+<script>
+    var map = L.map('map').setView([41.15, -8.63], 30);
+
+    var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    map.setZoom(13);
+
+    var startPoint=[];
+
+    for (var i=0;i<24;i++){
+        var temp=[];
+        startPoint.push(temp);
+    }
+
+    var hour_input;
+
+    var startPoint_0=[];
+    var startPoint_1=[];
+    var startPoint_2=[];
+    var startPoint_3=[];
+    var startPoint_4=[];
+    var startPoint_5=[];
+    var startPoint_6=[];
+    var startPoint_7=[];
+    var startPoint_8=[];
+    var startPoint_9=[];
+    var startPoint_10=[];
+    var startPoint_11=[];
+    var startPoint_12=[];
+    var startPoint_13=[];
+    var startPoint_14=[];
+    var startPoint_15=[];
+    var startPoint_16=[];
+    var startPoint_17=[];
+    var startPoint_18=[];
+    var startPoint_19=[];
+    var startPoint_20=[];
+    var startPoint_21=[];
+    var startPoint_22=[];
+    var startPoint_23=[];
+
+    var flag_0=false;
+    var flag_1=false;
+    var flag_2=false;
+    var flag_3=false;
+    var flag_4=false;
+    var flag_5=false;
+    var flag_6=false;
+    var flag_7=false;
+    var flag_8=false;
+    var flag_9=false;
+    var flag_10=false;
+    var flag_11=false;
+    var flag_12=false;
+    var flag_13=false;
+    var flag_14=false;
+    var flag_15=false;
+    var flag_16=false;
+    var flag_17=false;
+    var flag_18=false;
+    var flag_19=false;
+    var flag_20=false;
+    var flag_21=false;
+    var flag_22=false;
+    var flag_23=false;
+
+
+    d3.csv("0.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_0.push(temp_3);
+            startPoint[0].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+0);
+                flag_0=true;
+            }
+        }
+    });
+
+    d3.csv("1.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_1.push(temp_3);
+            startPoint[1].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+1);
+                flag_1=true;
+            }
+        }
+    });
+
+    d3.csv("2.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_2.push(temp_3);
+            startPoint[2].push(temp_3);
+
+
+            if (k==data.length-1){
+                console.log("complete:"+2);
+                flag_2=true;
+            }
+        }
+    });
+
+    d3.csv("3.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_3.push(temp_3);
+            startPoint[3].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+3);
+                flag_3=true;
+            }
+        }
+    });
+
+    d3.csv("4.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_4.push(temp_3);
+            startPoint[4].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+4);
+                flag_4=true;
+            }
+        }
+    });
+
+    d3.csv("5.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_5.push(temp_3);
+            startPoint[5].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+5);
+                flag_5=true;
+            }
+        }
+    });
+
+    d3.csv("6.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_6.push(temp_3);
+            startPoint[6].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+6);
+                flag_3=true;
+            }
+        }
+    });
+
+    d3.csv("7.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_7.push(temp_3);
+            startPoint[7].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+7);
+                flag_7=true;
+            }
+        }
+    });
+
+    d3.csv("8.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_8.push(temp_3);
+            startPoint[8].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+8);
+                flag_8=true;
+            }
+        }
+    });
+
+    d3.csv("9.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_9.push(temp_3);
+            startPoint[9].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+9);
+                flag_9=true;
+            }
+        }
+    });
+
+    d3.csv("10.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_10.push(temp_3);
+            startPoint[10].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+10);
+                flag_10=true;
+            }
+        }
+    });
+
+    d3.csv("11.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_11.push(temp_3);
+            startPoint[11].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+11);
+                flag_11=true;
+            }
+        }
+    });
+
+    d3.csv("12.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_12.push(temp_3);
+            startPoint[12].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+12);
+                flag_12=true;
+            }
+        }
+    });
+
+    d3.csv("13.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_13.push(temp_3);
+            startPoint[13].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+12);
+                flag_13=true;
+            }
+        }
+    });
+
+    d3.csv("14.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_14.push(temp_3);
+            startPoint[14].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+14);
+                flag_14=true;
+            }
+        }
+    });
+
+    d3.csv("15.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_15.push(temp_3);
+            startPoint[15].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+15);
+                flag_15=true;
+            }
+        }
+    });
+
+    d3.csv("16.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_16.push(temp_3);
+            startPoint[16].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+16);
+                flag_16=true;
+            }
+        }
+    });
+
+    d3.csv("17.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_17.push(temp_3);
+            startPoint[17].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+17);
+                flag_17=true;
+            }
+        }
+    });
+
+    d3.csv("18.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_18.push(temp_3);
+            startPoint[18].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+18);
+                flag_18=true;
+            }
+        }
+    });
+
+    d3.csv("19.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_19.push(temp_3);
+            startPoint[19].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+19);
+                flag_19=true;
+            }
+        }
+    });
+
+    d3.csv("20.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_20.push(temp_3);
+            startPoint[20].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+20);
+                flag_20=true;
+            }
+        }
+    });
+
+    d3.csv("21.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_21.push(temp_3);
+            startPoint[21].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+21);
+                flag_21=true;
+            }
+        }
+    });
+
+    d3.csv("22.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_22.push(temp_3);
+            startPoint[22].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+22);
+                flag_22=true;
+            }
+        }
+    });
+
+    d3.csv("23.csv", function (data) {
+
+        for (var k = 0; k < data.length; k++) {
+            var lan = data[k]["lan"];
+            var lng = data[k]["lng"];
+            var number = data[k]["number"];
+            var temp_3 = [lan, lng, number ];
+            startPoint_23.push(temp_3);
+            startPoint[23].push(temp_3);
+
+            if (k==data.length-1){
+                console.log("complete:"+23);
+                flag_23=true;
+            }
+        }
+    });
+
+    console.log(startPoint);
+
+    var heat=L.heatLayer(startPoint_0,{radius: 8}).addTo(map);
+
+    function getButtonOnClick(){
+        var num=document.getElementById("input_text").value;
+        console.log("num:");
+        console.log(num);
+        if (num!==hour_input){
+            hour_input=num;
+            map.removeLayer(heat);
+
+            heat= L.heatLayer(startPoint[hour_input],{radius: 8}).addTo(map);
+        }
+    }
+
+</script>
+</body>
+</html>
+
