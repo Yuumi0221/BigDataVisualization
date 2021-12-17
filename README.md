@@ -8,13 +8,13 @@
 
 ### 小组成员
 
-沈溢鼎、吴元昊、陈佩佩
+SYD、WYH、Yuumi
 
 
 
 ## 数据
 
-* 数据内容：
+* 数据内容（[下载](https://www.kaggle.com/crailtap/taxi-trajectory/download)）：
 
   ​	葡萄牙波尔图 2013.7.1 ~ 2014.6.30，为期一年时间段内出租车营运数据
 
@@ -26,23 +26,27 @@
 
 ## 文件组织结构
 
-项目文件已上传至[GitHub](https://github.com/Yuumi0221/BigDataVisualization)。由于GitHub上传不了大文件，因此除了原数据以外的csv文件统统没有上传。
+项目文件已上传至[GitHub](https://github.com/Yuumi0221/BigDataVisualization)。由于GitHub上传不了大文件，因此csv文件统统没有上传。
 
 ```
 - Sources
 	- taxi
-		- train.csv
+		- train.csv (附下载地址)
 - Code
 	- HeatMap
 		- dataProcess
 			- getStartPoint.ipynb
 			- statistic_hour.ipynb
-		- total (内含csv大文件，运行代码可生成)
-			- TimeData (csv大文件，运行代码可生成)
+		- total
+			- TimeData
+				- 0.csv ~ 23.csv (运行代码生成)
 			- index.html
-		- hour_1 (内含csv大文件，运行代码可生成)
+			- StartPoint.csv (运行代码生成)
+		- hour_1
+			- 0.csv ~ 23.csv (运行代码生成)
 			- index.html
-		- hour_2 (内含csv大文件，运行代码可生成)
+		- hour_2
+			- 0.csv ~ 23.csv (运行代码生成)
 			- index.html
 	- RouteLine
 		- routeLine.ipynb
@@ -51,7 +55,10 @@
 	- TotalAnalysis
 		- TotalAnalysis.ipynb
 		- TotalAnalysis.html
-		- newSource (csv大文件，运行代码可生成)
+		- newSource (运行代码生成)
+			- miss_false_no_poly_new_source.csv
+			- polyline_source.csv
+			- unstack_call_type_df.csv
 - html
 	- DVPPT
 	- HeatMap
