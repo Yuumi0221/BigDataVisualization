@@ -56,7 +56,6 @@ slide:
 	frameborder="0" 
 	style="box-shadow: 0px 0px 20px -10px #888;">
 </iframe>
-
 ~~
 
 ### 2:00 A.M.
@@ -106,6 +105,6 @@ slide:
 </iframe>
 ---
 
-# 谢谢大家！
+# [总结与评估](https://yuumi0221.github.io/slides/DVPPT3.html)
 
-[回到最初的起点](https://yuumi0221.github.io/slides/DVPPT.html)
+[回到热力图](https://yuumi0221.github.io/slides/DVPPT2.html)
